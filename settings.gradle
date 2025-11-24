@@ -1,0 +1,5 @@
+rootProject.name='AudioFun'
+include ':app'
+include ':libsoundtouch'
+include ':libwebrtc'
+include ':mu-phone-call'

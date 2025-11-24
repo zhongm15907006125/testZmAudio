@@ -1,0 +1,63 @@
+plugins {
+    id 'com.android.library'
+}
+
+static def versionName() {
+    "2.5.8"
+}
+
+android {
+    compileSdkVersion 29
+    buildToolsVersion "30.0.3"
+
+    defaultConfig {
+        minSdkVersion 21
+        //noinspection ExpiredTargetSdkVersion
+        targetSdkVersion 28
+        versionCode 1
+        versionName versionName()
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            android.libraryVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "mu-phone-call-release@${versionName()}.aar"
+                }
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
+dependencies {
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    compileOnly fileTree(dir: 'libs', include: ['*.jar'])
+    compileOnly fileTree(dir: 'libs', include: ['*.aar'])
+
+    compileOnly 'androidx.recyclerview:recyclerview:1.0.0'
+    compileOnly 'androidx.legacy:legacy-support-v4:1.0.0'
+    compileOnly 'androidx.appcompat:appcompat:1.0.0'
+    implementation 'com.alibaba:fastjson:1.2.83'
+    implementation 'com.facebook.fresco:fresco:1.13.0'
+
+    compileOnly fileTree(include: ['uniapp-v8-release.aar'], dir: '../app/libs')
+
+    // 网络请求 okhttp3
+    compileOnly 'com.squareup.okhttp3:okhttp:4.9.1'
+    compileOnly 'com.squareup.okhttp3:logging-interceptor:4.9.1'
+}
