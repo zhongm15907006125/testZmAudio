@@ -17,14 +17,22 @@
         android:supportsRtl="true"
         android:name=".HughApplication"
         android:theme="@style/AppTheme">
-        <activity android:name="com.hugh.MainActivity">
+<!--        <activity android:name="com.hugh.MainActivity">-->
 <!--            <intent-filter>-->
 <!--                <action android:name="android.intent.action.MAIN" />-->
 
 <!--                <category android:name="android.intent.category.LAUNCHER" />-->
 <!--            </intent-filter>-->
-        </activity>
+<!--        </activity>-->
+        <activity
+            android:name="com.hugh.MainTestActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".FmodActivity"/>
         <activity android:name="com.hugh.audiohome.AudioFunHomeActivity" />
         <activity android:name="com.hugh.webrtcdemo.RtcActivity"/>
