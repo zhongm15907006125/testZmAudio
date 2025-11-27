@@ -3,11 +3,8 @@ package mu.phone.call.util;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
-import android.util.Log;
 
 /**
  * @author LiYejun
@@ -164,10 +161,22 @@ public class SystemCallUtil {
         if (RomUtil.isOppo()) {
             return checkOppoRecord(context);
         }
-//        if (!RomUtil.isLeeco()) {
-//            return true;
-//        }
-        return VivoRecordingDetector.isVivoAutoCallRecordingEnabled(context);
+        if (RomUtil.isVivo()) {
+            return checkVivoRecord(context);
+        }
+        if (!RomUtil.isLeeco()) {
+            return true;
+        }
+        return checkLeshiRecord(context);
+    }
+
+    private static boolean checkVivoRecord(Context context) {
+        try {
+            return Settings.Global.getInt(context.getContentResolver(), "call_record_state_global") != 0;
+        } catch (Settings.SettingNotFoundException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     private static boolean checkXiaomiRecord(Context context) {
@@ -186,44 +195,6 @@ public class SystemCallUtil {
             e.printStackTrace();
             return false;
         }
-    }
-
-    public static boolean queryVivoSettingsViaContentProvider(Context context) {
-        try {
-            // vivo可能使用的ContentProvider URI
-            String[] providerUris = {
-                    "content://com.vivo.settings/settings",
-                    "content://com.bbk.settings/settings",
-                    "content://com.vivo.globalsearch/settings"
-            };
-
-            for (String uriString : providerUris) {
-                try {
-                    Cursor cursor = context.getContentResolver().query(
-                            Uri.parse(uriString),
-                            null,
-                            "name=?",
-                            new String[]{"call_auto_record"},
-                            null
-                    );
-
-                    if (cursor != null && cursor.moveToFirst()) {
-                        int valueIndex = cursor.getColumnIndex("value");
-                        if (valueIndex != -1) {
-                            int value = cursor.getInt(valueIndex);
-                            cursor.close();
-                            return value == 1;
-                        }
-                        cursor.close();
-                    }
-                } catch (Exception e) {
-                    // 继续尝试下一个URI
-                }
-            }
-        } catch (Exception e) {
-            Log.e("VivoDetector", "ContentProvider查询失败: " + e.getMessage());
-        }
-        return false;
     }
 
     private static boolean checkHuaweiRecord(Context context) {

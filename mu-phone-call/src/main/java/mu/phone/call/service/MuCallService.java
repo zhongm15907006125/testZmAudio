@@ -9,10 +9,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.IBinder;
-import android.util.Log;
-
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 
 /**
  * 前台服务
@@ -22,7 +19,6 @@ import androidx.core.app.NotificationCompat;
 public class MuCallService extends Service {
 
     private static final String CHANNEL_ID = "com.mu.call";
-    private static final String TAG = "zzmm";
 
     private Notification initNotification() {
         String channelId = getPackageName();
@@ -39,10 +35,6 @@ public class MuCallService extends Service {
         Notification build = builder.setTicker("已开启拨号服务")
                 .setContentTitle("拨号服务")
                 .setContentText("服务正在运行，请勿关闭")
-                .setStyle(new Notification.BigTextStyle()
-                        .bigText("详细的通知内容"))
-                .setPriority(Notification.PRIORITY_DEFAULT)
-                .setOngoing(true)
                 .build();
         build.flags |= 32;
         return build;
@@ -51,14 +43,12 @@ public class MuCallService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
-        Log.i(TAG,"service bind");
         return null;
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i(TAG,"service onCreate");
         startForeground(1, initNotification());
     }
 
